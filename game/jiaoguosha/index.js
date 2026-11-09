@@ -32,7 +32,7 @@ for (const r of roster) {
     maxHp: r.maxHp,
     skills: r.skills.map((s) => s.id),
     isZhugong: r.lord,
-    img: "image/character/" + r.id + ".svg",
+    img: "image/character/" + r.id + ".art.svg",
     trashBin: [],
     names: r.name,
   };

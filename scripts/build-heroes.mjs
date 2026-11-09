@@ -3,6 +3,7 @@ import { cpSync, readFileSync, writeFileSync, realpathSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { nativeSkills } from "./native-skills.mjs";
+import { buildArtwork } from "./build-artwork.mjs";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), ".."),
   core = resolve(root, "vendor/noname/apps/core");
 cpSync(
@@ -31,6 +32,7 @@ await build({
     },
   },
 });
+await buildArtwork();
 const file = resolve(root, "dist/game/boot-manifest.json"),
   manifest = JSON.parse(readFileSync(file, "utf8"));
 manifest.version = Date.now().toString(36);

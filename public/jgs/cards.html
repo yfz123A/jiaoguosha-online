@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>武将资料 · 胶国杀</title>
+    <link rel="stylesheet" href="/jgs/cards.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="seal">胶</span>
+        <div>
+          <p>胶国杀 · 朋友局</p>
+          <h1>武将资料</h1>
+        </div>
+      </header>
+      <p class="intro">
+        点开查看完整将面。原卡文字供查阅，对局结算以游戏内技能说明为准。
+      </p>
+      <nav aria-label="资料分类">
+        <button data-category="heroes" aria-pressed="true">
+          武将将面 <span>20</span>
+        </button>
+        <button data-category="rules" aria-pressed="false">说明与牌背</button>
+        <button data-category="sisyphus" aria-pressed="false">
+          西西弗胶附卡
+        </button>
+      </nav>
+      <p id="status" role="status">正在加载资料…</p>
+      <section id="cards" aria-label="卡面列表"></section>
+      <footer>关闭本页即可回到原来的牌桌。</footer>
+    </main>
+    <dialog id="viewer" aria-labelledby="card-name">
+      <div class="viewer-bar">
+        <h2 id="card-name"></h2>
+        <a id="original" target="_blank" rel="noopener">打开大图</a
+        ><button id="close" aria-label="关闭卡面">关闭 ×</button>
+      </div>
+      <img id="full-card" alt="" />
+    </dialog>
+    <script type="module" src="/jgs/cards.js"></script>
+  </body>
+</html>

@@ -9,6 +9,7 @@ import {
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { nativeSkills } from "./native-skills.mjs";
+import { buildArtwork } from "./build-artwork.mjs";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const vendor = resolve(root, "vendor/noname"),
   core = resolve(vendor, "apps/core");
@@ -157,29 +158,7 @@ const output = resolve(root, "dist/game");
 mkdirSync(output, { recursive: true });
 cpSync(resolve(core, "dist"), output, { recursive: true });
 cpSync(resolve(core, "image"), resolve(output, "image"), { recursive: true });
-const roster = JSON.parse(
-  readFileSync(resolve(root, "game/jiaoguosha/roster.json"), "utf8"),
-);
-for (const r of roster) {
-  const color = {
-    wei: "#233d60",
-    shu: "#754238",
-    wu: "#315a50",
-    qun: "#5d485f",
-    shen: "#7a6032",
-  }[r.group];
-  const names = r.name.split("&");
-  const text = names
-    .map(
-      (n, i) =>
-        `<text x="${names.length === 1 ? 120 : 84 + i * 72}" y="85" writing-mode="tb" fill="#f7e9c9" font-family="serif" font-size="${n.length > 4 ? 32 : 44}" letter-spacing="14">${n}</text>`,
-    )
-    .join("");
-  writeFileSync(
-    resolve(output, "image/character", r.id + ".svg"),
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320"><rect width="240" height="320" fill="${color}"/><path d="M12 12H228V308H12Z" fill="none" stroke="#d3b984" opacity=".65"/><path d="M25 35L215 285M25 285L215 35" stroke="#d3b984" opacity=".1"/><text x="120" y="46" text-anchor="middle" fill="#d3b984" font-family="serif" font-size="15">${r.title}</text>${text}<text x="120" y="292" text-anchor="middle" fill="#d3b984" font-family="serif" font-size="15">胶 国 杀</text></svg>`,
-  );
-}
+await buildArtwork(output);
 cpSync(resolve(vendor, "LICENSE"), resolve(output, "LICENSE"));
 // The production entry uses only precompiled JS, without the development file server or JIT service worker.
 let html = readFileSync(resolve(output, "index.html"), "utf8").replace(

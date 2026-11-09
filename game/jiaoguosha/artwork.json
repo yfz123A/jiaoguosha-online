@@ -1,0 +1,28 @@
+{
+  "jgs_jiashijie": { "number": 1, "view": [0.27, 0.12, 0.59, 0.44] },
+  "jgs_huangyilong": { "number": 2, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_yanfangzheng": { "number": 3, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_chengyifan": { "number": 4, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_wenxiaoshuai": { "number": 5, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_abulaiti": { "number": 6, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_jianlinyi": { "number": 7, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_xiangdaiyu": { "number": 8, "view": [0.29, 0.14, 0.6, 0.49] },
+  "jgs_wanghuang": { "number": 9, "view": [0.28, 0.085, 0.49, 0.6] },
+  "jgs_wangzhihan": { "number": 10, "view": [0.34, 0.31, 0.52, 0.43] },
+  "jgs_huangdiankui": { "number": 11, "view": [0.36, 0.22, 0.58, 0.45] },
+  "jgs_wanghao": { "number": 12, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_rixiangwen": { "number": 13, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_wanghao_lord": { "number": 14, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_zhangyuxi": { "number": 15, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_fuchaoqun": { "number": 16, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_zouyin": { "number": 17, "view": [0.24, 0.12, 0.61, 0.51] },
+  "jgs_litao": { "number": 18, "view": [0.25, 0.1, 0.66, 0.49] },
+  "jgs_yanwen": {
+    "number": 19,
+    "panels": [
+      [0.23, 0.19, 0.4, 0.25],
+      [0.62, 0.32, 0.36, 0.28]
+    ]
+  },
+  "jgs_xixifujiao": { "number": 20, "view": [0.25, 0.12, 0.54, 0.46] }
+}

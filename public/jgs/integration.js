@@ -295,6 +295,13 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
   const text = document.createElement("span");
   text.textContent = `${session.nickname} · ${session.players}人身份局 · ${session.fillAI ? "人机补位" : "可一直等待"}`;
   bar.append(text);
+  const gallery = document.createElement("a");
+  gallery.href = "/jgs/cards.html";
+  gallery.target = "_blank";
+  gallery.rel = "noopener";
+  gallery.textContent = "武将资料";
+  gallery.title = "在新页面查看完整将面、说明卡和西西弗胶附卡";
+  bar.append(gallery);
   const share = document.createElement("button");
   share.textContent = "邀请朋友";
   share.onclick = async () => {

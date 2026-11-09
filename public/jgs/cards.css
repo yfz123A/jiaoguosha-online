@@ -1,0 +1,205 @@
+:root {
+  color-scheme: dark;
+  font:
+    16px/1.6 system-ui,
+    "Microsoft YaHei",
+    sans-serif;
+  color: #e9e1cd;
+  background: #14231f;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at top, #2e4036, #14231f 65%);
+  min-height: 100vh;
+}
+main {
+  max-width: 1060px;
+  margin: auto;
+  padding: 40px 24px;
+}
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.seal {
+  border: 1px solid #bfa16a;
+  color: #d9be88;
+  padding: 3px 12px;
+  font: 40px serif;
+}
+header p {
+  margin: 0;
+  color: #b1b8a6;
+  font-size: 13px;
+  letter-spacing: 3px;
+}
+h1 {
+  margin: 0;
+  font: 32px/1.5 serif;
+}
+.intro,
+footer {
+  color: #bcc3b6;
+  font-size: 14px;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 26px 0;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
+nav button,
+.viewer-bar button,
+.viewer-bar a {
+  border: 1px solid #667769;
+  border-radius: 5px;
+  background: #1c2d26;
+  color: #e9e1cd;
+  padding: 8px 14px;
+  text-decoration: none;
+}
+nav button[aria-pressed="true"] {
+  background: #d2bd8a;
+  border-color: #d2bd8a;
+  color: #17251d;
+}
+nav span {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-left: 4px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #d2bd8a;
+  outline-offset: 4px;
+}
+#cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px 18px;
+}
+.card {
+  padding: 0;
+  border: 1px solid #596c59;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #24352b;
+  color: inherit;
+  text-align: left;
+  transition: transform 0.15s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #d2bd8a;
+}
+.card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3/5;
+  object-fit: cover;
+  background: #111b17;
+}
+.card.reference img {
+  aspect-ratio: 4/3;
+  object-fit: contain;
+}
+.card strong,
+.card small {
+  display: block;
+  margin: 8px 10px;
+  line-height: 1.4;
+}
+.card strong {
+  font-size: 15px;
+}
+.card small {
+  font-size: 12px;
+  color: #c2b694;
+}
+#cards.references {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+footer {
+  margin-top: 30px;
+  border-top: 1px solid #3a4e40;
+  padding-top: 16px;
+}
+dialog {
+  border: 1px solid #76806b;
+  border-radius: 8px;
+  padding: 0;
+  width: fit-content;
+  max-width: calc(100vw - 24px);
+  max-height: 94dvh;
+  background: #17221e;
+  color: inherit;
+}
+dialog::backdrop {
+  background: #000c;
+}
+.viewer-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  position: sticky;
+  top: 0;
+  background: #17221ef5;
+  z-index: 1;
+}
+.viewer-bar h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+}
+.viewer-bar a,
+.viewer-bar button {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 5px 10px;
+}
+#full-card {
+  display: block;
+  max-width: min(100%, 1050px);
+  width: auto;
+  height: auto;
+  max-height: calc(94dvh - 60px);
+  object-fit: contain;
+  margin: auto;
+}
+@media (max-width: 700px) {
+  main {
+    padding: 24px 16px;
+  }
+  #cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 10px;
+  }
+  #cards.references {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .card strong {
+    font-size: 13px;
+  }
+}
+@media (max-width: 390px) {
+  #cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .viewer-bar {
+    gap: 6px;
+    padding: 8px;
+  }
+}

@@ -27,6 +27,9 @@
           <span id="status" class="status">正在查看房间</span>
         </div>
         <p id="hint" class="hint">输入昵称和房主告诉你的口令，即可入座。</p>
+        <button id="quick-test" class="secondary" hidden disabled>
+          创建单人测试房（自动补人机）
+        </button>
         <form id="entry" method="post" action="/api/join">
           <label
             >你的昵称<input
@@ -53,6 +56,12 @@
               <option value="4">4 人</option>
               <option value="5">5 人</option>
               <option value="6">6 人</option>
+            </select></label
+          >
+          <label id="ai-label" hidden
+            >开局方式<select id="fill-ai">
+              <option value="false">全真人 · 人齐后开始</option>
+              <option value="true">人机补位 · 空位由人机补齐</option>
             </select></label
           >
           <p id="error" role="alert"></p>

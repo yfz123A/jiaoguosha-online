@@ -31,8 +31,10 @@ async function api(path, body) {
 function hostView() {
   $("heading").textContent = "准备今晚的牌局";
   $("hint").textContent =
-    "设置人数和口令。等朋友全部入座后，在牌桌中开始游戏。";
+    "自己测试可直接创建单人测试房。和朋友玩时，在下面设置总人数、口令及开局方式。";
   $("player-label").hidden = false;
+  $("ai-label").hidden = false;
+  $("quick-test").hidden = false;
   $("submit").textContent = "创建房间 →";
 }
 if (isHost) hostView();
@@ -49,12 +51,14 @@ $("entry").onsubmit = async (event) => {
   event.preventDefault();
   $("error").textContent = "";
   $("submit").disabled = true;
+  $("quick-test").disabled = true;
   try {
     const nickname = $("nickname").value.trim();
     await api(isHost ? "/api/room" : "/api/join", {
       nickname,
       password: $("password").value,
       players: Number($("players").value),
+      fillAI: $("fill-ai").value === "true",
     });
     localStorage.setItem("jgs-nickname", nickname);
     localStorage.setItem("gplv3_noname_alerted", "true");
@@ -62,7 +66,14 @@ $("entry").onsubmit = async (event) => {
   } catch (e) {
     $("error").textContent = e.message;
     $("submit").disabled = false;
+    $("quick-test").disabled = false;
   }
+};
+$("quick-test").onclick = () => {
+  if (!$("nickname").value.trim()) $("nickname").value = "测试玩家";
+  if (!$("password").value) $("password").value = crypto.randomUUID();
+  $("fill-ai").value = "true";
+  $("entry").requestSubmit();
 };
 async function update() {
   try {
@@ -75,7 +86,7 @@ async function update() {
           ? "本局已结束"
           : s.room.started
             ? "对局进行中"
-            : `${s.room.connected} / ${s.room.players} 人已连接`;
+            : `${s.room.connected} / ${s.room.players} 真人已连接${s.room.fillAI ? " · 空位补人机" : ""}`;
     if (isHost) {
       $("share").hidden = false;
       const pending = s.networkMode === "public" && !s.invite;
@@ -99,4 +110,5 @@ $("copy").onclick = async () => {
 };
 await update();
 $("submit").disabled = false;
+$("quick-test").disabled = false;
 setInterval(update, 5000);

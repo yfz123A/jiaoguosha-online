@@ -65,7 +65,7 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
     const value = connectPlayers.apply(this, args);
     document.getElementById("jgs-loading")?.remove();
     if (ui.connectStartBar)
-      ui.connectStartBar.firstChild.textContent = `${session.players}人标准身份局 · 等待朋友入座`;
+      ui.connectStartBar.firstChild.textContent = `${session.players}人标准身份局 · ${session.fillAI ? "点击开始，空位由人机补齐" : "等待朋友入座"}`;
     ui.connectShareButton?.hide();
     return value;
   };
@@ -161,6 +161,38 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
   game.countChoose = () => {
     _status.imchoosing = true;
   };
+  // The upstream engine controls seats without a client socket using its built-in AI.
+  const randomMapOL = game.randomMapOL;
+  game.randomMapOL = function (...args) {
+    const result = randomMapOL.apply(this, args);
+    if (session.fillAI) {
+      const names = game.players
+        .filter((p) => p !== game.me && !p.ws)
+        .map((p, i) => [p.playerid, `人机·${i + 1}`]);
+      game.broadcastAll(function (names) {
+        for (const [id, nickname] of names) {
+          const p = lib.playerOL[id];
+          p.nickname = nickname;
+          p.setNickname();
+        }
+      }, names);
+    }
+    return result;
+  };
+  jgs.canStartGame = () => {
+    const seats = game.connectPlayers || [];
+    const humans = seats.filter((p) => p.nickname);
+    if (lib.node?.clients?.some((client) => !client.closed && !client.inited))
+      return false;
+    if (humans.some((p) => p.playerid !== "1" && !p.ws?.inited)) return false;
+    if (session.fillAI ? humans.length < 1 : humans.length !== session.players)
+      return false;
+    // Clicking native empty seats must not change the chosen table size.
+    lib.configOL.number = session.players;
+    lib.configOL.player_number = String(session.players);
+    seats.forEach((p) => p.classList.remove("unselectable2"));
+    return true;
+  };
   // Keep the engine's wait callbacks, but stop all timeout-driven AI choices.
   const playerProto = lib.element.Player.prototype;
   const send = playerProto.send;
@@ -219,10 +251,7 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
   };
   const startGame = lib.message.server.startGame;
   lib.message.server.startGame = function (...args) {
-    if (
-      game.connectPlayers?.filter((p) => p.nickname).length !== session.players
-    )
-      return;
+    if (!jgs.canStartGame()) return;
     return startGame.apply(this, args);
   };
   lib.onover.push(() => {
@@ -253,7 +282,7 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
   brand.textContent = "胶国杀 · 朋友局";
   bar.append(brand);
   const text = document.createElement("span");
-  text.textContent = `${session.nickname} · ${session.players}人身份局 · 可一直等待`;
+  text.textContent = `${session.nickname} · ${session.players}人身份局 · ${session.fillAI ? "人机补位" : "可一直等待"}`;
   bar.append(text);
   const share = document.createElement("button");
   share.textContent = "邀请朋友";

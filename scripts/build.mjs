@@ -79,7 +79,7 @@ patch("noname/ui/create/index.js", (s) =>
   replace(
     s,
     "if (num >= lib.configOL.number - 1) {",
-    'if (game.connectPlayers.filter(p => p.nickname && (p.playerid === "1" || p.ws?.inited)).length !== window.__jgs.session.players) {',
+    "if (!window.__jgs.canStartGame()) {",
   ).replace(
     "至少要有两名玩家才能开始游戏！",
     "请等所有真人玩家入座后再开始游戏。",

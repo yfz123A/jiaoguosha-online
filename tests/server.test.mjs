@@ -114,6 +114,41 @@ test("cross-origin room mutations and unauthenticated websocket upgrades are rej
   assert.equal(code, 401);
 });
 
+test("AI fill is an explicit host room option and cannot be enabled by joining players", async (t) => {
+  const { request, host } = await fixture(t);
+  assert.equal(host.body.fillAI, false);
+  assert.equal(
+    (
+      await request(
+        "/api/room",
+        {
+          nickname: "测试房主",
+          password: "test1234",
+          players: 4,
+          fillAI: "true",
+        },
+        { cookie: host.cookie },
+      )
+    ).status,
+    400,
+  );
+  const room = await request(
+    "/api/room",
+    { nickname: "测试房主", password: "test1234", players: 6, fillAI: true },
+    { cookie: host.cookie },
+  );
+  assert.equal(room.status, 200);
+  assert.equal(room.body.fillAI, true);
+  assert.equal((await request("/api/status")).body.room.fillAI, true);
+  const guest = await request("/api/join", {
+    nickname: "真人朋友",
+    password: "test1234",
+    fillAI: false,
+  });
+  assert.equal(guest.status, 200);
+  assert.equal(guest.body.fillAI, true);
+});
+
 test("relay binds game identities to authenticated sessions and excludes new arrivals after start", async (t) => {
   const { request, origin, host, app } = await fixture(t);
   const guest = await request("/api/join", {

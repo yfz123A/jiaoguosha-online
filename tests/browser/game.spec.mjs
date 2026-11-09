@@ -241,7 +241,12 @@ for (const count of [4, 5, 6])
             await pages[0].evaluate(() => {
               const { ui, _status, game, get } = __jgs;
               if (!_status.imchoosing) return;
-              if (ui.confirm?.str?.includes("c")) ui.click.cancel();
+              if (_status.event.player !== game.me) return;
+              if (
+                _status.event.name === "chooseToUse" ||
+                ui.confirm?.str?.includes("c")
+              )
+                ui.click.cancel();
               else if (_status.event.name === "chooseToDiscard") {
                 const n = get.select(_status.event.selectCard)[0];
                 for (const c of game.me

@@ -75,6 +75,7 @@ export async function createApp({
     onlineKey: s.onlineKey,
     roomKey: state.room.key,
     players: state.room.players,
+    fillAI: state.room.fillAI,
     generation: state.room.generation,
   });
   const cookie = (req, res, s) =>
@@ -161,6 +162,7 @@ export async function createApp({
           room: state.room
             ? {
                 players: state.room.players,
+                fillAI: state.room.fillAI,
                 started: state.room.started,
                 ended: state.room.ended,
                 connected: lobby.count(),
@@ -191,6 +193,7 @@ export async function createApp({
         if (
           !validateName(data.nickname) ||
           ![4, 5, 6].includes(data.players) ||
+          (data.fillAI !== undefined && typeof data.fillAI !== "boolean") ||
           typeof data.password !== "string" ||
           data.password.length < 4 ||
           data.password.length > 64
@@ -206,6 +209,7 @@ export async function createApp({
           key = token();
         state.room = {
           players: data.players,
+          fillAI: data.fillAI === true,
           salt,
           digest: scryptSync(data.password, salt, 32),
           key,

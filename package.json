@@ -10,6 +10,7 @@
   "scripts": {
     "setup": "node scripts/setup.mjs",
     "build": "node scripts/build.mjs",
+    "build:heroes": "node scripts/build-heroes.mjs",
     "start": "node server/index.mjs",
     "test": "node --test tests/server.test.mjs",
     "test:browser": "playwright test"

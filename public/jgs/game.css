@@ -57,8 +57,34 @@
 body #window > .connectevents {
   display: none !important;
 }
-body .auto {
+body #autobutton {
   display: none !important;
+}
+.handcards .card.jgs-backed,
+.handcards .card:has(.gaintag[data-jgs-back]) {
+  background: repeating-linear-gradient(
+    45deg,
+    #243f3b,
+    #243f3b 7px,
+    #31534c 7px,
+    #31534c 8px
+  ) !important;
+}
+.handcards .card.jgs-backed > :not(.gaintag) {
+  visibility: hidden;
+}
+.card.jgs-backed::after {
+  content: "背置";
+  position: absolute;
+  inset: 35% 0;
+  color: #e5d4a3;
+  text-align: center;
+  font-size: 18px;
+}
+.equips .jgs-backed,
+.judges .jgs-backed {
+  filter: grayscale(1);
+  opacity: 0.65;
 }
 @media (orientation: portrait) and (max-width: 700px) {
   #jgs-orientation {

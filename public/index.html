@@ -64,6 +64,18 @@
               <option value="true">人机补位 · 空位由人机补齐</option>
             </select></label
           >
+          <label id="pack-label" hidden
+            >武将包<select id="character-pack">
+              <option value="mixed">胶国杀＋标准武将</option>
+              <option value="jiaoguosha">仅胶国杀 · 20 张武将牌</option>
+              <option value="standard">仅标准武将</option>
+            </select></label
+          >
+          <label id="hero-label" hidden
+            >测试选将（人机房可用）<select id="test-hero">
+              <option value="">正常随机选将</option>
+            </select></label
+          >
           <p id="error" role="alert"></p>
           <button type="submit" id="submit" disabled>
             进入房间 <span>→</span>
@@ -82,7 +94,7 @@
       </section>
       <footer>
         <p>有人暂离可以等一等。房主关闭游戏后，本局结束。</p>
-        <small>首版使用无名杀现成武将 · 胶国杀自制武将后续加入</small>
+        <small>已加入 20 张胶国杀武将牌 · 可指定武将与人机测试</small>
         <details>
           <summary>关于本项目</summary>
           基于

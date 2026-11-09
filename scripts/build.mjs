@@ -8,11 +8,18 @@ import {
 } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { nativeSkills } from "./native-skills.mjs";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const vendor = resolve(root, "vendor/noname"),
   core = resolve(vendor, "apps/core");
 if (!existsSync(resolve(core, "node_modules/vite")))
   throw Error("请先运行 npm run setup");
+cpSync(
+  resolve(root, "game/jiaoguosha"),
+  resolve(core, "character/jiaoguosha"),
+  { recursive: true },
+);
+await nativeSkills(core, resolve(core, "character/jiaoguosha"));
 function original(path) {
   return execFileSync("git", ["show", `HEAD:apps/core/${path}`], {
     cwd: vendor,
@@ -38,7 +45,7 @@ patch("scripts/build.ts", (s) => {
   s = replace(
     s,
     '.filter(entry => entry.isDirectory() || type !== "character")',
-    `.filter(entry => ({character:['standard'],card:['standard.js','extra.js'],mode:['identity.js','connect.js']}[type]).includes(entry.name))`,
+    `.filter(entry => ({character:['standard','jiaoguosha'],card:['standard.js','extra.js'],mode:['identity.js','connect.js']}[type]).includes(entry.name))`,
   );
   s = replace(s, "if (import.meta.main) {", "if (true) {");
   return s;
@@ -73,8 +80,36 @@ patch("noname/library/element/player.js", (s) =>
     s,
     "clearTimeout(lib.node.torespondtimeout[this.playerid]);\n\t\t\tif (this.ws",
     "clearTimeout(lib.node.torespondtimeout[this.playerid]);\n\t\t\tif (window.__jgs) return;\n\t\t\tif (this.ws",
+  ).replaceAll(
+    "return ui.selected.cards?.includes(card);",
+    'return ui.selected.cards?.includes(card) || card.hasGaintag("eternal_jgs_back");',
   ),
 );
+patch("noname/get/index.js", (s) =>
+  s.replaceAll(
+    "return ui.selected.cards?.includes(card);",
+    'return ui.selected.cards?.includes(card) || card.hasGaintag("eternal_jgs_back");',
+  ),
+);
+patch("noname/library/element/content.ts", (s) =>
+  replace(
+    s,
+    'if (cardInfo.noEffect || !player.getCards("j").includes(event.card)) {',
+    'if (cardInfo.noEffect || event.card.hasGaintag("eternal_jgs_back") || !player.getCards("j").includes(event.card)) {',
+  ),
+);
+patch("mode/identity.js", (s) => {
+  s = replace(
+    s,
+    "const chooseButtonEvent = game.zhu.chooseButton(true);",
+    `const reserved=window.__jgs?.session.testHero;\nif(reserved){event.list.remove(reserved);event.list2.remove(reserved);list=game.zhu===game.me?[reserved]:list.filter(n=>n!==reserved);}\nconst chooseButtonEvent = game.zhu.chooseButton(true);`,
+  );
+  return replace(
+    s,
+    'list.push([currentPlayer, [str, [event.list.randomRemove(Math.min(num, num2)), "characterx"]], selectButton, true]);',
+    'list.push([currentPlayer, [str, [currentPlayer===game.me && window.__jgs?.session.testHero ? [window.__jgs.session.testHero] : event.list.randomRemove(Math.min(num, num2)), "characterx"]], selectButton, true]);',
+  );
+});
 patch("noname/ui/create/index.js", (s) =>
   replace(
     s,
@@ -89,7 +124,7 @@ patch(
   "game/package.js",
   (s) =>
     s +
-    `\nObject.assign(window.noname_package,{character:{standard:'标准'},card:{standard:'标准',extra:'军争'},mode:{identity:'身份',connect:'联机'},play:{},music:{},background:{ol_bg:'龙纹'},submode:{identity:{normal:'标准身份'}}});\n`,
+    `\nObject.assign(window.noname_package,{character:{standard:'标准',jiaoguosha:'胶国杀'},card:{standard:'标准',extra:'军争'},mode:{identity:'身份',connect:'联机'},play:{},music:{},background:{ol_bg:'龙纹'},submode:{identity:{normal:'标准身份'}}});\n`,
 );
 patch("game/config.json", (s) => {
   const c = JSON.parse(s);
@@ -97,7 +132,7 @@ patch("game/config.json", (s) => {
     mode: "connect",
     show_splash: "off",
     new_tutorial: true,
-    characters: ["standard"],
+    characters: ["standard", "jiaoguosha"],
     cards: ["standard", "extra"],
     extensions: [],
     plays: [],
@@ -122,6 +157,29 @@ const output = resolve(root, "dist/game");
 mkdirSync(output, { recursive: true });
 cpSync(resolve(core, "dist"), output, { recursive: true });
 cpSync(resolve(core, "image"), resolve(output, "image"), { recursive: true });
+const roster = JSON.parse(
+  readFileSync(resolve(root, "game/jiaoguosha/roster.json"), "utf8"),
+);
+for (const r of roster) {
+  const color = {
+    wei: "#233d60",
+    shu: "#754238",
+    wu: "#315a50",
+    qun: "#5d485f",
+    shen: "#7a6032",
+  }[r.group];
+  const names = r.name.split("&");
+  const text = names
+    .map(
+      (n, i) =>
+        `<text x="${names.length === 1 ? 120 : 84 + i * 72}" y="85" writing-mode="tb" fill="#f7e9c9" font-family="serif" font-size="${n.length > 4 ? 32 : 44}" letter-spacing="14">${n}</text>`,
+    )
+    .join("");
+  writeFileSync(
+    resolve(output, "image/character", r.id + ".svg"),
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320"><rect width="240" height="320" fill="${color}"/><path d="M12 12H228V308H12Z" fill="none" stroke="#d3b984" opacity=".65"/><path d="M25 35L215 285M25 285L215 35" stroke="#d3b984" opacity=".1"/><text x="120" y="46" text-anchor="middle" fill="#d3b984" font-family="serif" font-size="15">${r.title}</text>${text}<text x="120" y="292" text-anchor="middle" fill="#d3b984" font-family="serif" font-size="15">胶 国 杀</text></svg>`,
+  );
+}
 cpSync(resolve(vendor, "LICENSE"), resolve(output, "LICENSE"));
 // The production entry uses only precompiled JS, without the development file server or JIT service worker.
 let html = readFileSync(resolve(output, "index.html"), "utf8").replace(
@@ -145,6 +203,7 @@ const modules = [
 ].map((m) => m[1].replace(/^\.\//, "/"));
 modules.push(
   "/character/standard.js",
+  "/character/jiaoguosha.js",
   "/card/standard.js",
   "/card/extra.js",
   "/mode/identity.js",

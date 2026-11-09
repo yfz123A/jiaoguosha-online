@@ -43,7 +43,10 @@ for (const count of [4, 5, 6])
       await page.goto(origin + (i === 0 ? "/#host=browser-test" : "/"));
       await page.fill("#nickname", i ? "玩家" + i : "房主");
       await page.fill("#password", "test-pass");
-      if (i === 0) await page.selectOption("#players", String(count));
+      if (i === 0) {
+        await page.selectOption("#players", String(count));
+        await page.selectOption("#character-pack", "standard");
+      }
       await page.click("#submit");
       await page.waitForFunction(
         (n) => window.__jgs?.game.connectPlayers?.length === n,

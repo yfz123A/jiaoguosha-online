@@ -79,6 +79,7 @@ for (const [count, humans] of [
         });
         await page.goto(origin + (i === 0 ? "/#host=ai-test" : "/"));
         if (i === 0) {
+          await page.selectOption("#character-pack", "standard");
           await page.selectOption("#players", String(count));
           if (humans === 1) {
             await page.click("#quick-test");
@@ -118,15 +119,13 @@ for (const [count, humans] of [
         await pages[0].waitForTimeout(100);
       }
       const state = await pages[0].evaluate(() => ({
-        players: __jgs.game.players
-          .concat(__jgs.game.dead)
-          .map((p) => ({
-            id: p.playerid,
-            name: p.name,
-            nickname: p.nickname,
-            bot: p !== __jgs.game.me && !p.ws,
-            phases: p.phaseNumber,
-          })),
+        players: __jgs.game.players.concat(__jgs.game.dead).map((p) => ({
+          id: p.playerid,
+          name: p.name,
+          nickname: p.nickname,
+          bot: p !== __jgs.game.me && !p.ws,
+          phases: p.phaseNumber,
+        })),
         auto: __jgs._status.auto,
         offline: __jgs.offline.size,
         event: __jgs._status.event.name,

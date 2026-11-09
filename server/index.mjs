@@ -13,6 +13,11 @@ import { promisify } from "node:util";
 const compress = promisify(gzip);
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const customHeroes = new Set(
+  JSON.parse(
+    await readFile(resolve(root, "game/jiaoguosha/roster.json"), "utf8"),
+  ).map((r) => r.id),
+);
 const mime = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -76,6 +81,8 @@ export async function createApp({
     roomKey: state.room.key,
     players: state.room.players,
     fillAI: state.room.fillAI,
+    characterPack: state.room.characterPack,
+    testHero: s.role === "host" ? state.room.testHero : null,
     generation: state.room.generation,
   });
   const cookie = (req, res, s) =>
@@ -163,6 +170,7 @@ export async function createApp({
             ? {
                 players: state.room.players,
                 fillAI: state.room.fillAI,
+                characterPack: state.room.characterPack,
                 started: state.room.started,
                 ended: state.room.ended,
                 connected: lobby.count(),
@@ -194,6 +202,14 @@ export async function createApp({
           !validateName(data.nickname) ||
           ![4, 5, 6].includes(data.players) ||
           (data.fillAI !== undefined && typeof data.fillAI !== "boolean") ||
+          (data.characterPack !== undefined &&
+            !["standard", "jiaoguosha", "mixed"].includes(
+              data.characterPack,
+            )) ||
+          (data.testHero &&
+            (!customHeroes.has(data.testHero) ||
+              data.fillAI !== true ||
+              !["jiaoguosha", "mixed"].includes(data.characterPack))) ||
           typeof data.password !== "string" ||
           data.password.length < 4 ||
           data.password.length > 64
@@ -210,6 +226,8 @@ export async function createApp({
         state.room = {
           players: data.players,
           fillAI: data.fillAI === true,
+          characterPack: data.characterPack || "standard",
+          testHero: data.testHero || null,
           salt,
           digest: scryptSync(data.password, salt, 32),
           key,

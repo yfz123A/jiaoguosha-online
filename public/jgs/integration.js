@@ -22,7 +22,7 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
     connect_mode: "identity",
     connect_nickname: session.nickname,
     connect_avatar: "caocao",
-    characters: ["standard"],
+    characters: ["standard", "jiaoguosha"],
     cards: ["standard", "extra"],
     extensions: [],
     extension_auto_import: false,
@@ -100,7 +100,12 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
         identity_mode: "normal",
         player_number: String(session.players),
         number: session.players,
-        characterPack: ["standard"],
+        characterPack:
+          session.characterPack === "jiaoguosha"
+            ? ["jiaoguosha"]
+            : session.characterPack === "mixed"
+              ? ["standard", "jiaoguosha"]
+              : ["standard"],
         cardPack: ["standard", "extra"],
         banned: ["old_re_lidian", "ganfuren", "gongsunzan"],
         bannedcards: [],
@@ -156,7 +161,9 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
           !config.banned?.includes(name),
       );
     }
-    return reinit.apply(this, args);
+    const value = reinit.apply(this, args);
+    setTimeout(() => lib.jgs?.refreshBacks(), 100);
+    return value;
   };
   game.countChoose = () => {
     _status.imchoosing = true;
@@ -242,6 +249,10 @@ export async function configure({ lib, game, get, _status, ui, ai }) {
   const reinited = lib.message.server.reinited;
   lib.message.server.reinited = function (...args) {
     const result = reinited.apply(this, args);
+    this.send(function (jokers) {
+      _status.jgs_jokers = jokers;
+      lib.jgs?.refreshBacks();
+    }, _status.jgs_jokers || null);
     const pending = jgs.pending.get(this.id);
     if (pending) this.send(...pending);
     jgs.offline.delete(this.id);

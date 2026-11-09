@@ -1,0 +1,162 @@
+[
+  {
+    "id": "jgs_xiangdaiyu",
+    "name": "向代煜",
+    "title": "月较是皎洁",
+    "group": "shu",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_jiashijie",
+    "name": "贾士杰",
+    "title": "胶吴太祖",
+    "group": "wu",
+    "hp": 3,
+    "maxHp": 3
+  },
+  {
+    "id": "jgs_huangyilong",
+    "name": "黄奕龙",
+    "title": "耐摔疤龙",
+    "group": "shu",
+    "hp": 3,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_yanfangzheng",
+    "name": "闫方正",
+    "title": "巴旗正皇",
+    "group": "wei",
+    "hp": 3,
+    "maxHp": 3
+  },
+  {
+    "id": "jgs_chengyifan",
+    "name": "程一帆",
+    "title": "焦糖晚餐",
+    "group": "qun",
+    "hp": 5,
+    "maxHp": 5
+  },
+  {
+    "id": "jgs_wenxiaoshuai",
+    "name": "文晓帅",
+    "title": "饺嗣率谛",
+    "group": "wei",
+    "hp": 3,
+    "maxHp": 3
+  },
+  {
+    "id": "jgs_abulaiti",
+    "name": "阿卜来提",
+    "title": "勤政誓杰",
+    "group": "wu",
+    "hp": 3,
+    "maxHp": 3
+  },
+  {
+    "id": "jgs_jianlinyi",
+    "name": "简麟懿",
+    "title": "胶师帝公",
+    "group": "shu",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_wanghuang",
+    "name": "王知翰&黄典奎",
+    "title": "帛绮音境",
+    "group": "wei",
+    "hp": 6,
+    "maxHp": 6
+  },
+  {
+    "id": "jgs_wangzhihan",
+    "name": "王知翰",
+    "title": "原音修士",
+    "group": "wei",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_huangdiankui",
+    "name": "黄典奎",
+    "title": "智川内堀",
+    "group": "wei",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_wanghao",
+    "name": "王浩",
+    "title": "诡变诗杰",
+    "group": "shu",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_wanghao_lord",
+    "name": "王浩",
+    "title": "胶杯圣主",
+    "group": "qun",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_fuchaoqun",
+    "name": "付超群",
+    "title": "捞帅二象性",
+    "group": "qun",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_zhangyuxi",
+    "name": "张宇曦",
+    "title": "湘胶皮",
+    "group": "shu",
+    "hp": 3,
+    "maxHp": 3
+  },
+  {
+    "id": "jgs_rixiangwen",
+    "name": "日向文",
+    "title": "娇饰胶香",
+    "group": "qun",
+    "hp": 3,
+    "maxHp": 3
+  },
+  {
+    "id": "jgs_xixifujiao",
+    "name": "西西弗胶",
+    "title": "胶始胶终",
+    "group": "shen",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_yanwen",
+    "name": "闫方正&文晓帅",
+    "title": "胶尅",
+    "group": "qun",
+    "hp": 4,
+    "maxHp": 4
+  },
+  {
+    "id": "jgs_zouyin",
+    "name": "邹印",
+    "title": "巾帼胶杰",
+    "group": "shu",
+    "hp": 3,
+    "maxHp": 3
+  },
+  {
+    "id": "jgs_litao",
+    "name": "李涛",
+    "title": "义胶热肠",
+    "group": "qun",
+    "hp": 4,
+    "maxHp": 4
+  }
+]

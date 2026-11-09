@@ -33,6 +33,43 @@ async function fixture(t) {
   return { app, origin, request, host };
 }
 
+test("custom character packs and test heroes are validated by the host API", async (t) => {
+  const { request } = await fixture(t);
+  const data = {
+    nickname: "测试玩家",
+    password: "test1234",
+    players: 4,
+    fillAI: true,
+    characterPack: "jiaoguosha",
+    testHero: "jgs_huangyilong",
+  };
+  for (const change of [
+    { characterPack: "unknown" },
+    { testHero: "caocao" },
+    { fillAI: false },
+    { characterPack: "standard" },
+  ]) {
+    assert.equal(
+      (await request("/api/room", { ...data, ...change }, { admin: true }))
+        .status,
+      400,
+    );
+  }
+  const host = await request("/api/room", data, { admin: true });
+  assert.equal(host.status, 200);
+  assert.equal(host.body.characterPack, "jiaoguosha");
+  assert.equal(host.body.testHero, "jgs_huangyilong");
+  const guest = await request("/api/join", {
+    nickname: "朋友",
+    password: "test1234",
+    characterPack: "standard",
+    testHero: "jgs_wanghao",
+  });
+  assert.equal(guest.status, 200);
+  assert.equal(guest.body.characterPack, "jiaoguosha");
+  assert.equal(guest.body.testHero, null);
+});
+
 test("host-only creation, password authentication, nickname validation and room capacity", async (t) => {
   const { request, host } = await fixture(t);
   assert.equal(host.status, 200);

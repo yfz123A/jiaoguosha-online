@@ -35,9 +35,28 @@ function hostView() {
   $("player-label").hidden = false;
   $("ai-label").hidden = false;
   $("quick-test").hidden = false;
+  $("pack-label").hidden = false;
+  $("hero-label").hidden = false;
   $("submit").textContent = "创建房间 →";
 }
 if (isHost) hostView();
+const roster = await fetch("/jgs/roster.json").then((r) => r.json());
+for (const hero of roster) {
+  const option = document.createElement("option");
+  option.value = hero.id;
+  option.textContent = `${hero.name} · ${hero.title}`;
+  $("test-hero").append(option);
+}
+$("character-pack").onchange = () => {
+  if ($("character-pack").value === "standard") $("test-hero").value = "";
+  $("test-hero").disabled = $("character-pack").value === "standard";
+};
+$("test-hero").onchange = () => {
+  if ($("test-hero").value) $("fill-ai").value = "true";
+};
+$("fill-ai").onchange = () => {
+  if ($("fill-ai").value === "false") $("test-hero").value = "";
+};
 $("nickname").value = localStorage.getItem("jgs-nickname") || "";
 try {
   const session = await api("/api/session");
@@ -59,6 +78,8 @@ $("entry").onsubmit = async (event) => {
       password: $("password").value,
       players: Number($("players").value),
       fillAI: $("fill-ai").value === "true",
+      characterPack: $("character-pack").value,
+      testHero: $("test-hero").value || undefined,
     });
     localStorage.setItem("jgs-nickname", nickname);
     localStorage.setItem("gplv3_noname_alerted", "true");

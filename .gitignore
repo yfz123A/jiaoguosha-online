@@ -1,0 +1,28 @@
+# Dependencies and build output
+node_modules/
+.pnpm-store/
+dist/
+build/
+coverage/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.cloudflared/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+~$*
+~*.tmp
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local editor and tool state
+.idea/
+.codex/

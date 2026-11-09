@@ -1,0 +1,78 @@
+#jgs-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 12px;
+  background: #15201ee8;
+  color: #e4d7b9;
+  font: 12px system-ui;
+  box-sizing: border-box;
+}
+#jgs-bar strong {
+  font-weight: 600;
+  white-space: nowrap;
+}
+#jgs-bar span {
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#jgs-bar button {
+  position: static;
+  color: #e4d7b9;
+  background: transparent;
+  border: 1px solid #758369;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font: 12px system-ui;
+  cursor: pointer;
+}
+#jgs-disconnected {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #111a14c9;
+  display: grid;
+  place-items: center;
+  color: #f4ead6;
+  font: 20px system-ui;
+  text-align: center;
+  pointer-events: auto;
+}
+#jgs-disconnected[hidden] {
+  display: none;
+}
+#jgs-orientation {
+  display: none;
+}
+#system {
+  top: 36px;
+}
+body #window > .connectevents {
+  display: none !important;
+}
+body .auto {
+  display: none !important;
+}
+@media (orientation: portrait) and (max-width: 700px) {
+  #jgs-orientation {
+    display: block;
+    position: fixed;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    text-align: center;
+    color: #f0d7a1;
+    font: 12px system-ui;
+    background: #15201eee;
+    padding: 8px;
+    pointer-events: none;
+  }
+}

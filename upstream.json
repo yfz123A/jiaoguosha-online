@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/libnoname/noname.git",
+  "commit": "351176e1e0cab4580229e69b7a197811c7bfc8a1",
+  "version": "1.11.7",
+  "excludedCharacters": ["old_re_lidian", "ganfuren", "gongsunzan"]
+}

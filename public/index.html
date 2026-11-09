@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>胶国杀 · 朋友局</title>
+    <link rel="stylesheet" href="/jgs/entry.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="seal">胶</span>
+        <div>
+          <p class="eyebrow">今晚，一起开一局</p>
+          <h1>胶国杀<span>朋友局</span></h1>
+        </div>
+      </header>
+      <section class="intro">
+        <p>熟悉的牌桌，熟悉的朋友。</p>
+        <div class="tags">
+          <span>标准身份</span><span>标准＋军争</span><span>4–6 人</span>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="panel-heading">
+          <h2 id="heading">加入朋友的房间</h2>
+          <span id="status" class="status">正在查看房间</span>
+        </div>
+        <p id="hint" class="hint">输入昵称和房主告诉你的口令，即可入座。</p>
+        <form id="entry" method="post" action="/api/join">
+          <label
+            >你的昵称<input
+              id="nickname"
+              name="nickname"
+              maxlength="12"
+              autocomplete="nickname"
+              required
+              placeholder="大家怎么称呼你"
+          /></label>
+          <label
+            >房间口令<input
+              id="password"
+              name="password"
+              type="password"
+              minlength="4"
+              maxlength="64"
+              required
+              autocomplete="off"
+              placeholder="至少 4 位"
+          /></label>
+          <label id="player-label" hidden
+            >本局人数<select id="players">
+              <option value="4">4 人</option>
+              <option value="5">5 人</option>
+              <option value="6">6 人</option>
+            </select></label
+          >
+          <p id="error" role="alert"></p>
+          <button type="submit" id="submit" disabled>
+            进入房间 <span>→</span>
+          </button>
+        </form>
+        <button id="resume" class="secondary" hidden>返回当前房间</button>
+        <div id="share" hidden>
+          <p>把朋友入口发给大家，口令单独告诉他们。</p>
+          <input id="invite" readonly aria-label="朋友入口" /><button
+            id="copy"
+            class="secondary"
+          >
+            复制朋友入口
+          </button>
+        </div>
+      </section>
+      <footer>
+        <p>有人暂离可以等一等。房主关闭游戏后，本局结束。</p>
+        <small>首版使用无名杀现成武将 · 胶国杀自制武将后续加入</small>
+        <details>
+          <summary>关于本项目</summary>
+          基于
+          <a
+            href="https://github.com/libnoname/noname"
+            target="_blank"
+            rel="noreferrer"
+            >无名杀</a
+          >
+          1.11.7，采用 <a href="/LICENSE" target="_blank">GPL-3.0</a> 许可。<a
+            href="https://github.com/yfz123A/jiaoguosha-online"
+            target="_blank"
+            rel="noreferrer"
+            >项目源码</a
+          >。
+        </details>
+      </footer>
+    </main>
+    <script type="module" src="/jgs/entry.js"></script>
+  </body>
+</html>
